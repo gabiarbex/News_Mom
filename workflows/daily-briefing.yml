@@ -1,0 +1,54 @@
+name: Boletim Diario
+
+on:
+  schedule:
+    # 12:00 UTC = 09:00 no horario de Brasilia (UTC-3, sem horario de verao).
+    # Segunda a sexta. A segunda-feira recupera o fim de semana automaticamente.
+    - cron: "0 12 * * 1-5"
+  workflow_dispatch: {}   # permite rodar manualmente pelo botao "Run workflow"
+
+permissions:
+  contents: write   # para publicar o painel (docs/) no GitHub Pages
+
+concurrency:
+  group: boletim
+  cancel-in-progress: false
+
+jobs:
+  boletim:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Instalar dependencias
+        run: pip install -r requirements.txt
+
+      - name: Gerar e enviar boletim
+        env:
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+          SMTP_HOST: ${{ secrets.SMTP_HOST }}
+          SMTP_PORT: ${{ secrets.SMTP_PORT }}
+          SMTP_USER: ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+          MAIL_FROM: ${{ secrets.MAIL_FROM }}
+          MAIL_TO: ${{ secrets.MAIL_TO }}
+        run: python -m newsmom.main
+
+      - name: Publicar painel (commit docs/)
+        run: |
+          git config user.name "news-mom-bot"
+          git config user.email "actions@github.com"
+          git add docs/
+          if git diff --staged --quiet; then
+            echo "Nenhuma mudanca no painel."
+          else
+            git commit -m "Boletim de $(date -u +%Y-%m-%d)"
+            git push
+          fi
