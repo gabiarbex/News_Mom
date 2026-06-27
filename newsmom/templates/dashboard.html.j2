@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ titulo_painel }} - {{ data_iso }}</title>
+  <style>
+    :root { --bg:#f4f5f7; --ink:#1a1a2e; --accent:#3a3a6a; --card:#fff; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink);
+      font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif; }
+    .wrap { max-width:1100px; margin:0 auto; padding:24px 16px 60px; }
+    .hero { background:linear-gradient(135deg,#1a1a2e,#3a3a6a); color:#fff;
+      border-radius:18px; padding:32px 28px; }
+    .hero .eyebrow { font-size:12px; letter-spacing:2px; text-transform:uppercase; opacity:.8; }
+    .hero h1 { margin:8px 0 4px; font-size:28px; }
+    .hero .date { opacity:.85; font-size:14px; }
+    .hero .intro { margin-top:14px; font-size:15px; line-height:1.6; opacity:.95; max-width:760px; }
+    .topbar { display:flex; gap:8px; flex-wrap:wrap; margin:18px 0; }
+    .topbar a { padding:6px 14px; background:#fff; border-radius:20px; font-size:13px;
+      color:var(--accent); text-decoration:none; border:1px solid #e6e8f0; }
+    .topbar a:hover { background:var(--accent); color:#fff; }
+    .grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(330px,1fr)); gap:16px; }
+    .card { background:var(--card); border-radius:14px; padding:20px 22px; }
+    .card h2 { margin:0 0 14px; font-size:18px; border-bottom:2px solid #eef0f7; padding-bottom:8px; }
+    .item { margin-bottom:18px; }
+    .item a.title { font-size:16px; font-weight:600; color:#2a2a5a; text-decoration:none; line-height:1.35; }
+    .item a.title:hover { text-decoration:underline; }
+    .item .src { font-size:12px; color:#999; margin:3px 0 6px; }
+    .item .sum { font-size:14px; line-height:1.55; color:#333; }
+    .item .why { font-size:13px; color:var(--accent); margin-top:5px; }
+    .full { grid-column:1 / -1; }
+    .learn { background:linear-gradient(135deg,#0f3460,#16537e); color:#fff; }
+    .learn h2 { border:none; color:#fff; }
+    .jobs a.chip { display:inline-block; margin:4px 8px 4px 0; padding:8px 14px;
+      background:var(--ink); border-radius:8px; font-size:13px; color:#fff; text-decoration:none; }
+    .foot { text-align:center; color:#aaa; font-size:12px; margin-top:30px; }
+    .foot a { color:#888; }
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="hero">
+      <div class="eyebrow">Boletim Matinal</div>
+      <h1>Bom dia, {{ nome }} &#9728;</h1>
+      <div class="date">{{ data_extenso }}</div>
+      {% if intro %}<p class="intro">{{ intro }}</p>{% endif %}
+    </div>
+
+    <div class="topbar">
+      <a href="index.html">&larr; Todas as edicoes</a>
+      {% for s in secoes %}<a href="#{{ s.chave }}">{{ s.nome }}</a>{% endfor %}
+      <a href="#vagas">Vagas</a>
+    </div>
+
+    <div class="grid">
+      {% for s in secoes %}
+      <div class="card" id="{{ s.chave }}">
+        <h2>{{ s.nome }}</h2>
+        {% for item in s.itens %}
+        <div class="item">
+          <a class="title" href="{{ item.link }}" target="_blank" rel="noopener">{{ item.headline }}</a>
+          <div class="src">{{ item.fonte }}{% if item.idioma_original == 'en' %} &middot; traduzido do ingles{% endif %}</div>
+          {% if item.resumo %}<div class="sum">{{ item.resumo }}</div>{% endif %}
+          {% if item.porque_importa %}<div class="why"><strong>Por que importa:</strong> {{ item.porque_importa }}</div>{% endif %}
+        </div>
+        {% endfor %}
+      </div>
+      {% endfor %}
+
+      <div class="card jobs full" id="vagas">
+        <h2>Vagas com o seu perfil</h2>
+        <p style="font-size:13px;color:#666;margin:0 0 10px;">Buscas para marketing, estrategia e lideranca:</p>
+        {% for v in vagas %}<a class="chip" href="{{ v.url }}" target="_blank" rel="noopener">{{ v.nome }} &rarr;</a>{% endfor %}
+      </div>
+
+      {% if aprenda %}
+      <div class="card learn full">
+        <h2>&#128161; Aprenda algo novo</h2>
+        <h3 style="margin:0 0 8px;">{{ aprenda.titulo }}</h3>
+        <p style="margin:0;font-size:14px;line-height:1.6;">{{ aprenda.corpo }}</p>
+      </div>
+      {% endif %}
+    </div>
+
+    <div class="foot">
+      <p>{{ titulo_painel }} &middot; gerado automaticamente</p>
+    </div>
+  </div>
+</body>
+</html>

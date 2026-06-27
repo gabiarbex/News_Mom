@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{ titulo_painel }} - {{ data_iso }}</title>
+</head>
+<body style="margin:0;padding:0;background:#f4f5f7;font-family:-apple-system,Segoe UI,Roboto,Helvetica,Arial,sans-serif;color:#1a1a2e;">
+  <div style="max-width:680px;margin:0 auto;padding:24px 16px;">
+
+    <!-- Cabecalho -->
+    <div style="background:linear-gradient(135deg,#1a1a2e 0%,#3a3a6a 100%);border-radius:16px;padding:28px 24px;color:#fff;">
+      <div style="font-size:13px;letter-spacing:2px;text-transform:uppercase;opacity:.8;">Boletim Matinal</div>
+      <h1 style="margin:6px 0 4px;font-size:24px;">Bom dia, {{ nome }} &#9728;</h1>
+      <div style="font-size:14px;opacity:.85;">{{ data_extenso }}</div>
+      {% if intro %}<p style="margin:14px 0 0;font-size:15px;line-height:1.5;opacity:.95;">{{ intro }}</p>{% endif %}
+    </div>
+
+    <!-- Sumario -->
+    {% if secoes %}
+    <div style="background:#fff;border-radius:12px;padding:16px 20px;margin-top:16px;">
+      <div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;color:#888;margin-bottom:8px;">Nesta edicao ({{ total }} itens)</div>
+      {% for s in secoes %}
+        <a href="#{{ s.chave }}" style="display:inline-block;margin:3px 6px 3px 0;padding:5px 12px;background:#eef0f7;border-radius:20px;font-size:13px;color:#3a3a6a;text-decoration:none;">{{ s.nome }} ({{ s.itens|length }})</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+
+    <!-- Secoes -->
+    {% for s in secoes %}
+    <div id="{{ s.chave }}" style="background:#fff;border-radius:12px;padding:20px 22px;margin-top:16px;">
+      <h2 style="margin:0 0 14px;font-size:18px;color:#1a1a2e;border-bottom:2px solid #eef0f7;padding-bottom:8px;">{{ s.nome }}</h2>
+      {% for item in s.itens %}
+      <div style="margin-bottom:18px;">
+        <a href="{{ item.link }}" style="font-size:16px;font-weight:600;color:#2a2a5a;text-decoration:none;line-height:1.35;">{{ item.headline }}</a>
+        <div style="font-size:12px;color:#999;margin:3px 0 6px;">{{ item.fonte }}{% if item.idioma_original == 'en' %} &middot; traduzido do ingles{% endif %}</div>
+        {% if item.resumo %}<div style="font-size:14px;line-height:1.55;color:#333;">{{ item.resumo }}</div>{% endif %}
+        {% if item.porque_importa %}<div style="font-size:13px;line-height:1.5;color:#3a3a6a;margin-top:5px;"><strong>Por que importa:</strong> {{ item.porque_importa }}</div>{% endif %}
+      </div>
+      {% endfor %}
+    </div>
+    {% endfor %}
+
+    <!-- Vagas -->
+    <div id="vagas" style="background:#fff;border-radius:12px;padding:20px 22px;margin-top:16px;">
+      <h2 style="margin:0 0 12px;font-size:18px;border-bottom:2px solid #eef0f7;padding-bottom:8px;">Vagas com o seu perfil</h2>
+      <p style="font-size:13px;color:#666;margin:0 0 10px;">Buscas atualizadas para o seu perfil de marketing, estrategia e lideranca:</p>
+      {% for v in vagas %}
+        <a href="{{ v.url }}" style="display:inline-block;margin:4px 8px 4px 0;padding:8px 14px;background:#1a1a2e;border-radius:8px;font-size:13px;color:#fff;text-decoration:none;">{{ v.nome }} &rarr;</a>
+      {% endfor %}
+    </div>
+
+    <!-- Aprenda algo novo -->
+    {% if aprenda %}
+    <div style="background:linear-gradient(135deg,#0f3460 0%,#16537e 100%);border-radius:12px;padding:22px;margin-top:16px;color:#fff;">
+      <div style="font-size:12px;text-transform:uppercase;letter-spacing:1px;opacity:.8;">&#128161; Aprenda algo novo</div>
+      <h3 style="margin:6px 0 8px;font-size:17px;">{{ aprenda.titulo }}</h3>
+      <p style="margin:0;font-size:14px;line-height:1.6;opacity:.95;">{{ aprenda.corpo }}</p>
+    </div>
+    {% endif %}
+
+    <!-- Rodape -->
+    <div style="text-align:center;padding:24px 12px;color:#aaa;font-size:12px;">
+      <p style="margin:0 0 4px;">{{ titulo_painel }} &middot; gerado automaticamente</p>
+      <p style="margin:0;">Tambem disponivel no painel online (GitHub Pages).</p>
+    </div>
+
+  </div>
+</body>
+</html>
