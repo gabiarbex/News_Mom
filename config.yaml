@@ -1,0 +1,107 @@
+# =============================================================================
+# News Mom - Configuracao do boletim diario
+# -----------------------------------------------------------------------------
+# Edite este arquivo para mudar temas, palavras-chave, destinatario, etc.
+# Nao coloque senhas/chaves aqui: elas ficam nos "Secrets" do GitHub.
+# =============================================================================
+
+destinatario:
+  nome: "Angelica"
+  # Para quem o email vai. Pode sobrescrever pelo secret MAIL_TO.
+  email: "angelica.arbex@lello.com.br"
+
+geral:
+  fuso_horario: "America/Sao_Paulo"   # 9h BRT
+  # Janela de busca (horas). Segunda-feira usa a janela "fim de semana"
+  # para recuperar o que saiu no sabado/domingo.
+  janela_horas_dia: 28
+  janela_horas_segunda: 76
+  # Quantos itens (no maximo) por secao no boletim final.
+  max_itens_por_secao: 5
+  # Quantos candidatos por tema sao enviados para a IA curar (controla custo).
+  max_candidatos_por_tema: 12
+  # Modelo da Claude usado para curar/traduzir/resumir.
+  # Sonnet equilibra qualidade e custo para uso diario.
+  # Para maxima qualidade troque por "claude-opus-4-8".
+  modelo_ia: "claude-sonnet-4-6"
+  # Titulo do site/painel.
+  titulo_painel: "Boletim Estrategico da Angelica"
+
+# -----------------------------------------------------------------------------
+# Temas. Cada tema busca uma ou mais queries no Google News (PT e/ou EN).
+# lang: pt  -> noticias em portugues (Brasil)
+# lang: en  -> noticias em ingles
+# -----------------------------------------------------------------------------
+temas:
+  - chave: imobiliario
+    nome: "Mercado Imobiliario"
+    queries:
+      - { q: "mercado imobiliario Brasil", lang: pt }
+      - { q: "lancamentos imobiliarios incorporadora", lang: pt }
+      - { q: "real estate market trends", lang: en }
+
+  - chave: condominios
+    nome: "Mercado de Condominios"
+    queries:
+      - { q: "administradora de condominios OR sindico OR condominio", lang: pt }
+      - { q: "property technology condominium management", lang: en }
+
+  - chave: mna
+    nome: "Fusoes & Aquisicoes (M&A)"
+    queries:
+      - { q: "fusoes e aquisicoes empresas", lang: pt }
+      - { q: "mergers and acquisitions deal", lang: en }
+
+  - chave: ia
+    nome: "IA para o Mundo Corporativo & Inovacao"
+    queries:
+      - { q: "inteligencia artificial empresas corporativo", lang: pt }
+      - { q: "enterprise AI innovation business", lang: en }
+
+  - chave: marketing
+    nome: "Marketing"
+    queries:
+      - { q: "marketing tendencias Brasil", lang: pt }
+      - { q: "marketing trends strategy", lang: en }
+
+  - chave: estrategia
+    nome: "Estrategia Corporativa & Lideranca"
+    queries:
+      - { q: "estrategia corporativa lideranca gestao", lang: pt }
+      - { q: "corporate strategy leadership", lang: en }
+
+  - chave: marcas
+    nome: "Estrategia de Marcas (Nacional & Internacional)"
+    queries:
+      - { q: "estrategia de marca branding", lang: pt }
+      - { q: "brand strategy global", lang: en }
+
+  - chave: publicidade
+    nome: "Cases de Publicidade em Destaque"
+    queries:
+      - { q: "campanha publicitaria case propaganda premio", lang: pt }
+      - { q: "advertising campaign case award", lang: en }
+
+  - chave: brasil
+    nome: "Brasil: Para Ficar Bem Informada"
+    queries:
+      - { q: "Brasil economia politica destaque", lang: pt }
+
+  - chave: regulatorio
+    nome: "Regulatorio (Reforma Tributaria & +)"
+    queries:
+      - { q: "reforma tributaria Brasil empresas", lang: pt }
+      - { q: "regulacao setor imobiliario Brasil", lang: pt }
+
+# -----------------------------------------------------------------------------
+# Vagas com o seu perfil. Geramos links de busca salva (clicaveis) e a IA
+# tambem destaca vagas que aparecerem nos feeds.
+# -----------------------------------------------------------------------------
+vagas:
+  palavras_chave:
+    - "Diretor de Marketing"
+    - "Head de Estrategia"
+    - "Gerente de Marketing"
+    - "Branding"
+    - "Estrategia Corporativa"
+  localizacao: "Sao Paulo, Brasil"
