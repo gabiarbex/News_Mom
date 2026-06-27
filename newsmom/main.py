@@ -18,6 +18,7 @@ from __future__ import annotations
 
 import argparse
 import datetime as dt
+import os
 import sys
 from pathlib import Path
 from zoneinfo import ZoneInfo
@@ -54,8 +55,11 @@ def main(argv: list[str] | None = None) -> int:
     agora = dt.datetime.now(tz)
     hoje = agora.date()
 
-    # Fim de semana: nao roda (o agendador ja evita, mas garantimos).
-    if hoje.weekday() >= 5:
+    # Execucao manual (botao "Run workflow") roda em qualquer dia, para teste.
+    manual = os.environ.get("GITHUB_EVENT_NAME", "") == "workflow_dispatch"
+
+    # Fim de semana: nao roda automaticamente (so manual).
+    if hoje.weekday() >= 5 and not manual:
         print(f"Hoje e {hoje} (fim de semana). Nada a fazer.")
         return 0
 
